@@ -53,7 +53,6 @@ const PaymentPageContent = () => {
         paymentProvider: "stripe",
         amount: course?.price || 0,
       };
-
       await createTransaction(transactionData), navigateToStep(3);
     }
   };

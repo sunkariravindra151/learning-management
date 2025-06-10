@@ -54,13 +54,14 @@ export const createStripePaymentIntent = async (
         allow_redirects: "never",
       },
     });
-
+    console.log("Stripe free : ");
     res.json({
       message: "",
       data: {
         clientSecret: paymentIntent.client_secret,
       },
     });
+    console.log("Stripr done");
   } catch (error) {
     res
       .status(500)
