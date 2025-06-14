@@ -21,10 +21,11 @@ const Course = () => {
     hasMarkedComplete,
     setHasMarkedComplete,
   } = useCourseProgressData();
-  console.log("currentChapter.video:", currentChapter);
+
+  console.log("currentChapter.video:", currentChapter?.video);
 
   const playerRef = useRef<ReactPlayer>(null);
-
+  console.log(playerRef);
   const handleProgress = ({ played }: { played: number }) => {
     if (
       played >= 0.8 &&

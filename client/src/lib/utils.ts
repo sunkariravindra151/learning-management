@@ -366,6 +366,25 @@ async function uploadVideo(
       fileType: file.type,
     }).unwrap();
 
+    // For local development, use FormData to upload the file
+    if (process.env.NEXT_PUBLIC_USE_LOCAL_STORAGE === 'true') {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch(uploadUrl, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to upload video: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      return { ...chapter, video: data.path };
+    }
+
+    // For production, use direct upload to S3
     await fetch(uploadUrl, {
       method: "PUT",
       headers: {
@@ -373,9 +392,6 @@ async function uploadVideo(
       },
       body: file,
     });
-    toast.success(
-      `Video uploaded successfully for chapter ${chapter.chapterId}`
-    );
 
     return { ...chapter, video: videoUrl };
   } catch (error) {

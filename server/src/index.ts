@@ -12,6 +12,8 @@ import {
   createClerkClient,
   requireAuth,
 } from "@clerk/express";
+import path from "path";
+import fs from "fs";
 /* ROUTE IMPORTS */
 import courseRoutes from "./routes/courseRoutes";
 import userClerkRoutes from "./routes/userClerkRoutes";
@@ -30,6 +32,13 @@ export const clerkClient = createClerkClient({
 });
 
 const app = express();
+
+// Ensure upload directories exist
+const uploadDir = path.join(__dirname, "../public/uploads/videos");
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
 app.use(express.json());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
